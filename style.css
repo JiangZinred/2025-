@@ -5,22 +5,27 @@ body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+}
+
+* {
+    box-sizing: inherit;
 }
 
 .book-container {
     position: relative;
     width: 100vw;
-    height: calc(100vw * 2/3); /* 3:2 aspect ratio */
+    height: calc(100vh - 100px); /* 减去控制按钮的高度 */
     max-width: 1200px;
     max-height: 800px;
-    min-width: 300px;
-    min-height: 200px;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 #book {
@@ -43,16 +48,26 @@ body {
 @media (max-width: 768px) {
     .book-container {
         width: 100vw;
-        height: calc(100vw * 2/3);
+        height: calc(100vh - 120px); /* 为小屏幕设备留出更多空间 */
+        max-height: none;
     }
     
     .controls {
-        bottom: -40px;
+        bottom: -50px;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0 10px;
     }
     
     button {
         padding: 8px 16px;
         font-size: 14px;
+        min-width: 80px;
+    }
+    
+    .page-jump {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -80,7 +95,10 @@ body {
     right: 0;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 20px;
+    flex-wrap: nowrap;
+    padding: 10px;
 }
 
 .page-jump {
