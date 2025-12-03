@@ -7,7 +7,7 @@ $(document).ready(function() {
         // 格式化页码，确保是4位数字
         const pageNumber = String(i).padStart(4, '0');
         const imageName = `2025_pages-to-jpg-${pageNumber}.jpg`;
-        const imagePath = `图片/${imageName}`;
+        const imagePath = `${imageName}`;
         
         // 创建页面div
         const page = $('<div>').addClass('page');
