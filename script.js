@@ -61,7 +61,7 @@ $(document).ready(function() {
         display: getDisplayMode(), // 根据屏幕宽度决定单页/双页显示
         acceleration: true, // 启用加速效果
         enableMouseEvents: true, // 启用鼠标事件
-        click: false, // 禁用点击翻页，避免与拖拽冲突
+        click: true, // 启用点击翻页
         tap: true, // 启用触摸翻页
         when: {
             turned: function(event, page, view) {
