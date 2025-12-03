@@ -37,6 +37,16 @@ $(document).ready(function() {
         };
     }
     
+    // 获取当前屏幕宽度
+    function getScreenWidth() {
+        return window.innerWidth;
+    }
+
+    // 根据屏幕宽度决定显示模式
+    function getDisplayMode() {
+        return getScreenWidth() < 768 ? "single" : "double";
+    }
+
     // 初始化翻书效果
     const size = getContainerSize();
     book.turn({
@@ -48,7 +58,7 @@ $(document).ready(function() {
         turnCorners: "tl,tr,bl,br", // 允许从四个角拖拽翻页
         turnPockets: "15px", // 增加可拖拽区域大小
         duration: 600, // 翻页动画持续时间
-        display: "double", // 双页显示
+        display: getDisplayMode(), // 根据屏幕宽度决定单页/双页显示
         acceleration: true, // 启用加速效果
         enableMouseEvents: true, // 启用鼠标事件
         click: false, // 禁用点击翻页，避免与拖拽冲突
@@ -66,10 +76,43 @@ $(document).ready(function() {
         'cursor': 'default'
     });
     
-    // 窗口大小变化时重新调整翻书尺寸
+    // 窗口大小变化时重新调整翻书尺寸和显示模式
     $(window).resize(function() {
-        const newSize = getContainerSize();
-        book.turn('size', newSize.width, newSize.height);
+        // 延迟执行，避免频繁调整
+        clearTimeout(window.resizeTimeout);
+        window.resizeTimeout = setTimeout(function() {
+            const newSize = getContainerSize();
+            const currentMode = book.turn('display');
+            const newMode = getDisplayMode();
+            
+            // 如果显示模式需要改变，先销毁再重新初始化
+            if (currentMode !== newMode) {
+                book.turn('destroy');
+                book.turn({
+                    width: newSize.width,
+                    height: newSize.height,
+                    autoCenter: true,
+                    elevation: 50,
+                    gradients: true,
+                    turnCorners: "tl,tr,bl,br",
+                    turnPockets: "15px",
+                    duration: 600,
+                    display: newMode,
+                    acceleration: true,
+                    enableMouseEvents: true,
+                    click: false,
+                    tap: true,
+                    when: {
+                        turned: function(event, page, view) {
+                            console.log('翻到第', page, '页');
+                        }
+                    }
+                });
+            } else {
+                // 只调整大小
+                book.turn('size', newSize.width, newSize.height);
+            }
+        }, 100);
     });
     
     // 翻页按钮事件
